@@ -2,11 +2,13 @@
 package com.iss.usagerateprogress;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -23,16 +25,16 @@ public class UsageRateProgress extends View {
     private String mName = "CPU";
 
     /** 进度名称文本颜色 */
-    private int mNameTextColor = Color.WHITE;
+    private int mNameTextColor;
 
     /** 进度条剩余进度背景颜色 */
-    private int mProgressResidueColor = 0xffe5e7f1;
+    private int mProgressResidueColor;
 
     /** 进度条颜色 */
-    private int mProgressColor = 0xffb3b7dd;
+    private int mProgressColor;
 
     /** 内环圆颜色 */
-    private int mInsideCircleColor = 0xffcbcbcb;
+    private int mInsideCircleColor;
 
     /** 外圆环进度宽 */
     private int mOutsideProgressWidth;
@@ -44,7 +46,7 @@ public class UsageRateProgress extends View {
     private int mMaxProgress = 100;
 
     /** 当前进度 */
-    private int mProgress = 30;
+    private int mProgress;
 
     /** 画笔对象 */
     private Paint mPaint;
@@ -69,7 +71,43 @@ public class UsageRateProgress extends View {
 
     public UsageRateProgress(Context context, AttributeSet attrs) {
         super(context, attrs);
+        getCustomAttrs(context, attrs);
         init();
+    }
+
+    /**
+     * 获取布局文件中自定义属性值
+     * 
+     * @param context 上下文对象
+     * @param attrs
+     * @author hubing
+     */
+    private void getCustomAttrs(Context context, AttributeSet attrs) {
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.UsageRateProgress);
+
+        // 获取配置的当前进度
+        mProgress = ta.getInt(R.styleable.UsageRateProgress_progress, 30);
+
+        // 获取进度名称属性
+        String name = ta.getString(R.styleable.UsageRateProgress_progressName);
+        if (!TextUtils.isEmpty(name)) {
+            mName = name;
+        }
+
+        // 获取进度名称文本颜色
+        mNameTextColor = ta.getColor(R.styleable.UsageRateProgress_nameTextColor, Color.WHITE);
+
+        // 获取进度条剩余进度背景颜色
+        mProgressResidueColor = ta.getColor(R.styleable.UsageRateProgress_progressResidueColor, 0xffe5e7f1);
+
+        // 获取进度条颜色
+        mProgressColor = ta.getColor(R.styleable.UsageRateProgress_progressColor, 0xffb3b7dd);
+
+        // 获取内环圆颜色
+        mInsideCircleColor = ta.getColor(R.styleable.UsageRateProgress_insideCircleColor, 0xffcbcbcb);
+
+        // 释放资源
+        ta.recycle();
     }
 
     /**
@@ -132,7 +170,7 @@ public class UsageRateProgress extends View {
         mPaint.setStyle(Style.STROKE);
         drawOutsideCirlce(canvas);
         drawInsideCirlce(canvas);
-        
+
         // 设置画笔样式，用以画文本
         mPaint.setStyle(Style.FILL);
         drawProgressName(canvas);
@@ -154,7 +192,7 @@ public class UsageRateProgress extends View {
         float x = mWidth / 2 - textWidth / 2;
         float y = mHeight / 2 + (Math.abs(mPaint.ascent()) - Math.abs(mPaint.descent())) / 2;
         canvas.drawText(text, x, y, mPaint);
-        
+
         // 画百分比符号
         int percentTextSize = mWidth / 10;
         mPaint.setTextSize(percentTextSize);
@@ -226,8 +264,11 @@ public class UsageRateProgress extends View {
         } else if (progress > mMaxProgress) {
             progress = mMaxProgress;
         }
-        this.mProgress = progress;
-        this.invalidate();
+
+        if (this.mProgress != progress) {
+            this.mProgress = progress;
+            this.invalidate();
+        }
     }
 
     /**
@@ -242,8 +283,11 @@ public class UsageRateProgress extends View {
         } else if (progress > mMaxProgress) {
             progress = mMaxProgress;
         }
-        this.mProgress = progress;
-        this.postInvalidate();
+
+        if (this.mProgress != progress) {
+            this.mProgress = progress;
+            this.postInvalidate();
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">UsageRateProgress</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="cpu">CPU</string>
+    <string name="memory">内存</string>
 
 </resources>

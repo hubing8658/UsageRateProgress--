@@ -1,21 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/com.iss.usagerateprogress"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <com.iss.usagerateprogress.UsageRateProgress
-        android:id="@+id/cp1"
+        android:id="@+id/urp1"
         android:layout_width="160dp"
         android:layout_height="160dp"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:layout_centerVertical="true" />
-    
+        app:progress="20"
+        app:nameTextColor="#C1C1C1"
+        app:progressResidueColor="#FFE4E1"
+        app:progressColor="#FF83FA"
+        app:insideCircleColor="#C1FFC1"
+        app:progressName="@string/cpu" />
+
     <com.iss.usagerateprogress.UsageRateProgress
-        android:id="@+id/cp2"
+        android:id="@+id/urp2"
         android:layout_width="160dp"
         android:layout_height="160dp"
-        android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        app:progressName="@string/memory" />
 
 </RelativeLayout>

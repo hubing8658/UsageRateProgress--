@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="UsageRateProgress">
+        <attr name="progress" format="integer" />
+        <attr name="progressName" format="string" />
+        <attr name="nameTextColor" format="color|reference" />
+        <attr name="progressResidueColor" format="color|reference" />
+        <attr name="progressColor" format="color|reference" />
+        <attr name="insideCircleColor" format="color|reference" />
+    </declare-styleable>
+
+</resources>
