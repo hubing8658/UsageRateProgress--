@@ -8,6 +8,7 @@
         <attr name="progressResidueColor" format="color|reference" />
         <attr name="progressColor" format="color|reference" />
         <attr name="insideCircleColor" format="color|reference" />
+        <attr name="openAnimotion" format="boolean" />
     </declare-styleable>
 
 </resources>

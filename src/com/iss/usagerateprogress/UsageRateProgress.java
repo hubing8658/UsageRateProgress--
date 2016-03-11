@@ -1,6 +1,8 @@
 
 package com.iss.usagerateprogress;
 
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -19,7 +21,7 @@ import android.view.View;
  * @version 1.0.0 2016-1-26
  */
 
-public class UsageRateProgress extends View {
+public class UsageRateProgress extends View implements AnimatorUpdateListener {
 
     /** 进度名称 */
     private String mName = "CPU";
@@ -69,6 +71,15 @@ public class UsageRateProgress extends View {
     /** 进度名称文字矩形区域高 */
     private int mTextRectHeight;
 
+    /** Value属性动画 */
+    private ValueAnimator progressAnimator;
+
+    /** 是否启用动画 */
+    private boolean isOpenAnimotion;
+    
+    /** 是否启动动画 */
+    private boolean isStartAnimotion = true;
+
     public UsageRateProgress(Context context, AttributeSet attrs) {
         super(context, attrs);
         getCustomAttrs(context, attrs);
@@ -106,6 +117,9 @@ public class UsageRateProgress extends View {
         // 获取内环圆颜色
         mInsideCircleColor = ta.getColor(R.styleable.UsageRateProgress_insideCircleColor, 0xffcbcbcb);
 
+        // 是否开启动画
+        isOpenAnimotion = ta.getBoolean(R.styleable.UsageRateProgress_openAnimotion, false);
+        
         // 释放资源
         ta.recycle();
     }
@@ -166,15 +180,20 @@ public class UsageRateProgress extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // 设置画笔样式，用以画圆环
-        mPaint.setStyle(Style.STROKE);
-        drawOutsideCirlce(canvas);
-        drawInsideCirlce(canvas);
+        if (isOpenAnimotion && isStartAnimotion) {
+            startAnimation(mProgress);
+            isStartAnimotion = false;
+        } else {
+            // 设置画笔样式，用以画圆环
+            mPaint.setStyle(Style.STROKE);
+            drawOutsideCirlce(canvas);
+            drawInsideCirlce(canvas);
 
-        // 设置画笔样式，用以画文本
-        mPaint.setStyle(Style.FILL);
-        drawProgressName(canvas);
-        drawProgressText(canvas);
+            // 设置画笔样式，用以画文本
+            mPaint.setStyle(Style.FILL);
+            drawProgressName(canvas);
+            drawProgressText(canvas);
+        }
     }
 
     /**
@@ -265,29 +284,40 @@ public class UsageRateProgress extends View {
             progress = mMaxProgress;
         }
 
+        // 如果进度值未改变则不进行重绘
         if (this.mProgress != progress) {
             this.mProgress = progress;
+            isStartAnimotion = true;
             this.invalidate();
         }
     }
 
     /**
-     * 设置当前进度,在非UI线程中调用
+     * 开始动画
      * 
      * @param progress
      * @author hubing
      */
-    public void setPostProgress(int progress) {
-        if (progress < 0) {
-            progress = 0;
-        } else if (progress > mMaxProgress) {
-            progress = mMaxProgress;
+    private void startAnimation(int progress) {
+        // 初始化动画
+        if (progressAnimator == null) {
+            progressAnimator = new ValueAnimator();
+            progressAnimator.setDuration(800);
+            progressAnimator.addUpdateListener(this);
         }
 
-        if (this.mProgress != progress) {
-            this.mProgress = progress;
-            this.postInvalidate();
-        }
+        // 重置动画值
+        progressAnimator.setIntValues(0, progress);
+        progressAnimator.start();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onAnimationUpdate(ValueAnimator animation) {
+        mProgress = (int) animation.getAnimatedValue();
+        this.invalidate();
     }
 
     /**
