@@ -5,4 +5,4 @@ UsageRateProgress-环形进度条
 
 <a href="https://github.com/hubing8658/UsageRateProgress--/blob/master/%E5%9C%86%E7%8E%AF%E5%BD%A2CPU%E4%BD%BF%E7%94%A8%E7%8E%87%E8%BF%9B%E5%BA%A6%E7%9A%84%E6%95%88%E6%9E%9C%E5%9B%BE.jpg"/>
 
-![2.gif](http://upload-images.jianshu.io/upload_images/1716531-51ffbcac7d08b51d.gif?imageMogr2/auto-orient/strip))
+![圆环形CPU使用率进度的效果图.jpg](https://github.com/hubing8658/UsageRateProgress--/blob/master/%E5%9C%86%E7%8E%AF%E5%BD%A2CPU%E4%BD%BF%E7%94%A8%E7%8E%87%E8%BF%9B%E5%BA%A6%E7%9A%84%E6%95%88%E6%9E%9C%E5%9B%BE.jpg)
